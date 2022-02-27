@@ -1,6 +1,3 @@
-resource "random_string" "rds_identifier" {
-  length = 4
-}
 
 resource "random_password" "db_password" {
   length = 8
@@ -14,11 +11,14 @@ resource "aws_db_subnet_group" "default" {
 }
 
 resource "aws_rds_cluster" "default" {
-  cluster_identifier      = format("%s-%s",var.rds_cluster_name,random_string.rds_identifier.result)
+
+  apply_immediately       = true
+  cluster_identifier      = var.rds_cluster_name
   engine                  = var.db_engine
   engine_version          = var.db_engine_version
 
   db_subnet_group_name    = aws_db_subnet_group.default.name
+  vpc_security_group_ids  = var.db_security_group
 
   database_name           = var.db_name
   master_username         = var.db_user

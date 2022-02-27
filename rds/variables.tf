@@ -2,6 +2,8 @@ variable "db_subnet_group" {
   type = list(string)
 }
 
+variable "db_security_group" {}
+
 variable "rds_cluster_name" {
   type = string
 }
