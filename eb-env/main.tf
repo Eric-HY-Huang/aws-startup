@@ -4,7 +4,7 @@ locals {
 
 data "aws_elastic_beanstalk_solution_stack" "php_platform" {
   most_recent = true
-  name_regex = "^64bit Amazon Linux (.*) running PHP (.*)$"
+  name_regex = "^64bit Amazon Linux (.*) running PHP ${var.php_version}$"
 }
 
 resource "aws_elastic_beanstalk_application" "web" {
@@ -13,7 +13,7 @@ resource "aws_elastic_beanstalk_application" "web" {
 }
 
 resource "aws_elastic_beanstalk_environment" "web_env" {
-  name                = format("%s-env",)
+  name                = format("%s-env",local.beanstalk_full_name)
   application         = aws_elastic_beanstalk_application.web.name
   solution_stack_name = data.aws_elastic_beanstalk_solution_stack.php_platform.name
 
@@ -39,11 +39,11 @@ resource "aws_elastic_beanstalk_environment" "web_env" {
     name      = "RootVolumeIOPS"
     value     = "${var.instance_volume_iops}"
   }
-  setting {
-    namespace = "aws:autoscaling:launchconfiguration"
-    name      = "EC2KeyName"
-    value     = "${var.ssh_key_name}"
-  }
+//  setting {
+//    namespace = "aws:autoscaling:launchconfiguration"
+//    name      = "EC2KeyName"
+//    value     = "${var.ssh_key_name}"
+//  }
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "SecurityGroups"
@@ -267,5 +267,34 @@ resource "aws_elastic_beanstalk_environment" "web_env" {
     name      = "composer_options"
     value     = "${var.composer_options}"
   }
+
+  # Configure environment properties for your application.
+  # EFS Environment variables
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "RDS_USERNAME"
+    value     = "${var.rds_username}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "RDS_PASSWORD"
+    value     = "${var.rds_password}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "RDS_HOSTNAME"
+    value     = "${var.rds_hostname}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "RDS_DB_NAME"
+    value     = "${var.rds_db_name}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "RDS_PORT"
+    value     = "${var.rds_port}"
+  }
+
 
 }
