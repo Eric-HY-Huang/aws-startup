@@ -28,6 +28,8 @@ resource "aws_rds_cluster" "default" {
   preferred_backup_window = var.preferred_backup_window
 
   deletion_protection     = var.db_delete_protection
+
+  skip_final_snapshot     = true
 }
 
 resource "aws_rds_cluster_instance" "cluster_instances" {

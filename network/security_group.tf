@@ -2,13 +2,12 @@ resource "aws_security_group" "allow_access_db" {
   name        = "allow_db_connection"
   description = "Allow inbound traffic from public subnet to db"
   vpc_id      = aws_vpc.main.id
-
   ingress {
     description      = "DB connection  from pub subnet"
     from_port        = 3306
     to_port          = 3306
     protocol         = "tcp"
-    cidr_blocks      = [for subnet in aws_subnet.public: subnet.cidr_block]
+    security_groups =  [aws_security_group.beanstalk-default.id]
 
   }
 
@@ -53,6 +52,6 @@ resource "aws_security_group" "beanstalk-default" {
   }
 
   tags = {
-    Name = "db_connection"
+    Name = "https/http request"
   }
 }

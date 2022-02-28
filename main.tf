@@ -35,8 +35,8 @@ module "app" {
 
   # PHP settings
   php_version = "8.0"
-  document_root = "/public"
-  memory_limit = "512M"
+  document_root = "/web"
+  memory_limit = "256M"
   zlib_php_compression = "Off"
   allow_url_fopen = "On"
   display_errors = "On"

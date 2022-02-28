@@ -230,6 +230,13 @@ resource "aws_elastic_beanstalk_environment" "web_env" {
     value     = "${var.environmentType == "LoadBalanced" ? var.healthcheck_timeout : var.environmentType}"
   }
 
+  //  Commented because Terraform think this has changed each apply (even if there is no changes)
+    setting {
+      namespace = "aws:elasticbeanstalk:environment"
+      name      = "LoadBalancerType"
+      value     = "${var.loadBalancerType}"
+    }
+
   # PHP Platform Options
   # http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options-specific.html#command-options-php
   setting {
@@ -269,7 +276,7 @@ resource "aws_elastic_beanstalk_environment" "web_env" {
   }
 
   # Configure environment properties for your application.
-  # EFS Environment variables
+  # RDS Environment variables
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "RDS_USERNAME"

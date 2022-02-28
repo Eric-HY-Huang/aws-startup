@@ -72,7 +72,7 @@ variable "environmentType" {
 # Load Balancing
 variable "loadBalancerType" {
   type    = string
-  default = "classic"
+  default = "application"
   description = "The type of load balancer for your environment. (classic, application, network)"
 }
 variable "port" {

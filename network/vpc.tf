@@ -31,6 +31,7 @@ resource "aws_subnet" "public" {
   tags = {
     Name = format("public-%s",local.az_names[each.key])
   }
+  map_public_ip_on_launch = true
 }
 
 resource "aws_subnet" "private" {
